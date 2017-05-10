@@ -1,8 +1,8 @@
-import Calendar, {Entry} from '../';
+import Calendar from '../';
 import path from 'path';
 import {exec} from 'child_process';
 
-console.dir([Calendar, Entry], {colors: true, depth: Infinity})
+console.dir(Calendar, {colors: true, depth: Infinity})
 var calendar = new Calendar(path.join(__dirname, '.caldb.json'), o=>{
 	o.timestamp = new Date(o.timestamp)
 	return o
@@ -35,5 +35,11 @@ exec('npm whoami', (err, user) => {
 		}),
 		{colors:true,depth:Infinity}
 	)
+	console.log('Stringify:\r\n%s', JSON.stringify(calendar, null, 2));
+
+	console.log('And deleting (very quick)');
+	while (calendar.entries.length) {
+		calendar.remove(0)
+		console.dir(calendar.entries,{colors:true,depth:Infinity})
+	}
 })
-console.log()

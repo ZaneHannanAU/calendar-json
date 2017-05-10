@@ -9,14 +9,14 @@ export class Entry {
 		this.until= new Date(until)
 		this.data = data
 	}
-	get key() {
+	key() {
 		return this.from.toISOString() + '|' + this.until.toISOString()
 	}
 	toJSON() {
-		return {[this.key]: this.data}
+		return {[this.key()]: this.data}
 	}
-	me(v, i) {
-		return this.key === v.key
+	me(v) {
+		return this.key() === v.key()
 	}
 	static fromJSON(json, reviver) {
 		let entries = []
@@ -54,11 +54,11 @@ export default class Calendar {
 	}
 	remove(idx) {
 		if (typeof idx === 'function') {
-			idx = this.entries.findIndex(found)
+			idx = this.entries.findIndex(idx)
 		}
-		delete this.entries[idx]
-		this.db.delete('/' + this.entries[idx].key)
+		this.db.delete('/' + this.entries[idx].key());
 		this.db.save()
+		this.entries.splice(idx, 1);
 		return this
 	}
 }
