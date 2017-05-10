@@ -1,0 +1,43 @@
+{
+  "name": "calendar-json",
+  "version": "1.0.0",
+  "description": "JSON calendar for Node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "babel calendar.js --out-file .calendar.js",
+    "postpublish": "npm run clean",
+    "clean": "rm .calendar.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZaneHannanAU/calendar-json/"
+  },
+  "keywords": [
+    "calendar",
+    "json",
+    "fs",
+    "date"
+  ],
+  "author": "zanehannanau",
+  "license": "ISC",
+  "dependencies": {
+    "node-json-db": "^0.7.3"
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": true
+          }
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.4.0"
+  }
+}
