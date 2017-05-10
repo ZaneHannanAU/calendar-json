@@ -3,10 +3,7 @@ import path from 'path';
 import {exec} from 'child_process';
 
 console.dir([Calendar, Entry], {colors: true, depth: Infinity})
-var calendar = new Calendar(path.join(__dirname, '.caldb.json'), o=>{
-	o.timestamp = new Date(o.timestamp)
-	return o
-})
+var calendar = new Calendar(path.join(__dirname, '.caldb.json'))
 
 exec('npm whoami', (err, user) => {
 	if (err) throw err
