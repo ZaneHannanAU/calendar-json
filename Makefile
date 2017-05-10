@@ -8,7 +8,8 @@ test:
 	node tests
 
 clean:
-	rm .*.js tests/.*.js
+	# Removes both js and JSON files, haha!
+	rm .*.js tests/.*.j* -f
 
 publish:
 	npm publish
