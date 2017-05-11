@@ -1,5 +1,5 @@
 try {
 	module.exports = require('./calendar.js');
 } catch (e) {
-	module.exports = require('./.calendar.js');
+	module.exports = require('./.calendar.js').default;
 }
