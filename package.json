@@ -1,6 +1,6 @@
 {
   "name": "calendar-json",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "JSON calendar for Node",
   "main": "index.js",
   "scripts": {
