@@ -1,12 +1,13 @@
 import DB from 'node-json-db';
 
-import {randomBytes} from 'crypto'
+const {randomBytes} = require('crypto');
 let UID = (n=15) => randomBytes(n).toString('base64')
 
 let oEntries=Object.entries?Object.entries:(o=>Object.keys(o).map(k=>[k,o[k]]))
 let vodp=(d)=>new Date(d).valueOf() + 24*36e5
 // Utility functions
-export class Entry {
+
+class Entry {
 	constructor([from=Date.now(),until=vodp(from)],data) {
 		this.from = new Date(from)
 		this.until= new Date(until)
@@ -16,26 +17,22 @@ export class Entry {
 		this.key = [from, until, UID()]
 	}
 	get key() {return this._key}
-	set key(a) {
-		var from, until, uid
-		if (Array.isArray(a))
-			[ from = Date.now(), until = vodp(from), uid = UID() ]=a
-		else if (typeof a === 'string' && a.split('|').length >= 2)
-			[ from = Date.now(), until = vodp(from), uid = UID() ]=a.split('|')
-		else throw new TypeError('unsupported type or length')
-
+	set key([from = Date.now(), until = vodp(from), uid = this._uid]) {
 		this.from = new Date(from)
 		this.until= new Date(until)
+
 		if (this.until < this.from)
 			throw new RangeError(`until value (${this.until.valueOf()}) cannot be less than from value (${this.from.valueOf()})`)
+
 		this._uid = uid
-		this._key = [
+		return this._key = [
 			this.from.toISOString(), this.until.toISOString(), uid
 		].join('|')
 	}
 	toJSON() {return {[this.key]: this.data}}
 	me(v) {return this.key === v.key}
-	static fromJSON(json, reviver = o=>o) { /*
+	static fromJSON(json, reviver = o=>o) {
+	/*
 		Reviver revives the original value, from the JSON value.
 		e.g.
 		    o=>{o.timestamp = new Date(o.timestamp);return o}
@@ -85,13 +82,13 @@ export default class Calendar {
 			console.error(err);
 		} finally {return this}
 	}
-	remove(idx) {
+	remove(idx, amt = 1) {
 		if (typeof idx === 'function')
 			idx = this.entries.findIndex(idx)
 
 		this.db.delete('/' + this.entries[idx].key);
 		// Delete key from the DB & save
-		this.entries.splice(idx, 1);
+		this.entries.splice(idx, amt);
 		// Take index from the entry and remove one value from that point.
 		return this
 	}
